@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="jms-queue" default="all" basedir=".">
+
+  <property environment="env"/>
+  <property file="../../../examples.properties"/>
+  <property name="build.compiler" value="${compiler}"/>
+
+  <!-- set global properties for this build -->
+  <property name="source" value="${basedir}"/>
+
+  <target name="all" depends="build"/>
+
+  <!-- Compile JMS classes into the clientclasses directory -->
+  <target name="build" >
+    <javac srcdir="${source}"
+      destdir="${client.classes.dir}"
+      includes="*.java"
+    />
+  </target>
+  
+  <target name="get_host">
+     <property name="myurl" value="t3://${wls.hostname}:${wls.port}"/>
+  </target>
+  
+  <target name="run.send" depends="get_host">
+    <java classname="examples.jms.queue.QueueSend" failonerror="yes">
+       <arg line="${myurl}"/>
+    </java>
+  </target>
+  
+  <target name="run.receive" depends="get_host">
+    <java classname="examples.jms.queue.QueueReceive" failonerror="yes">
+      <arg line="${myurl}"/>
+    </java>
+  </target>
+  
+  <target name="run.receivetx" depends="get_host">
+    <java classname="examples.jms.queue.QueueReceiveInTx" failonerror="yes">
+      <arg line="${myurl}"/>
+    </java>
+  </target>
+  
+  <target name="run.browse" depends="get_host">
+    <java classname="examples.jms.queue.QueueBrowse" failonerror="yes">
+      <arg line="${myurl}"/>
+    </java>
+  </target>
+  
+  <target name="clean">
+    <delete dir="${client.classes.dir}/examples/jms/queue"/>
+  </target>
+  
+</project>

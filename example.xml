@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+This file contains meta-data about the associated example.  
+This file and its contents are not required to build, deploy, 
+or execute the example.  The meta-data is intended for Oracle
+internal use only.
+
+Copyright (c) 2003,2014, Oracle and/or its affiliates. All rights reserved.
+-->
+<example
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="http://samples.beasys.com/example.xsd">
+  <name>Using JMS Queue</name>
+  <description>Demonstrates how to establish a connection to a JMS queue, and send, browse, and receive messages from that queue.</description>
+  <date>2003-11-06-08:00</date>
+  <author>Oracle</author>
+  <version>1.0</version>
+  <package>examples.jms.queue</package>
+  <zip>jms_queue</zip>
+  <wlsCompatibility>9.0</wlsCompatibility>
+  <parentCategory>API</parentCategory>
+  <childCategory>Messaging (JMS)</childCategory>
+  <subCategory/>
+  <wlsConfiguration/>
+  <coconutTests>
+    <buildTest><![CDATA[
+    <test name="build-jms/queue">
+      <ant-task>
+        <ant dir="${examples.src.dir}/examples/jms/queue"/>
+        <sleep seconds="5"/>
+      </ant-task>
+    </test>]]>
+    </buildTest>
+    <executeTest><![CDATA[
+      <test name="run-jms/queue/QueueSend" requiresSuccess="build-jms/queue">
+      <test-parameter name="cmdline" value="java examples.jms.queue.QueueSend t3://localhost:7001"/>
+      <test-parameter name="input1" value="Go Noles!"/>
+      <test-parameter name="input2" value="quit"/>
+      <javatest testclass="@CMDLINE_INTERACTIVE_EXAMPLE_TEST@"/>
+    </test>
+    <test name="run-jms/queue/QueueBrowse" requiresSuccess="run-jms/queue/QueueSend">
+      <cmdline checkmode="EXITCODE OUTPUTSTRING">
+        <cmd>java -classpath @CMDLINE_CLASSPATH@ examples.jms.queue.QueueBrowse t3://localhost:7001</cmd>
+        <expectedexitcode>0</expectedexitcode>
+        <expectedoutputstring regexp="true">.*?Go Noles.*</expectedoutputstring>
+        <timeout>30</timeout>
+      </cmdline>
+    </test>
+    <test name="run-jms/queue/QueueReceive" requiresSuccess="run-jms/queue/QueueSend">
+      <cmdline checkmode="EXITCODE OUTPUTSTRING">
+        <cmd>java -classpath @CMDLINE_CLASSPATH@ examples.jms.queue.QueueReceive t3://localhost:7001</cmd>
+        <expectedexitcode>0</expectedexitcode>
+        <expectedoutputstring  regexp="true">.*?Go Noles.*</expectedoutputstring>
+        <timeout>30</timeout>
+      </cmdline>
+    </test>]]>
+    </executeTest>
+  </coconutTests>
+  <build>
+    <deployable>true</deployable>
+  </build>
+  <execution>
+    <class>
+      <name>examples.jms.queue.QueueSend</name>
+      <parameter>t3://localhost:7001</parameter>
+    </class>
+    <class>
+      <name>examples.jms.queue.QueueBrowse</name>
+      <parameter>t3://localhost:7001</parameter>
+    </class>
+    <class>
+      <name>examples.jms.queue.QueueReceive</name>
+      <parameter>t3://localhost:7001</parameter>
+    </class>
+  </execution>
+
+</example>

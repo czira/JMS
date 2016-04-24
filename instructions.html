@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><!-- InstanceBegin template="/Templates/instructions_template.dwt" codeOutsideHTMLIsLocked="false" -->
+  <head>
+  <!-- InstanceBeginEditable name="doctitle" -->
+  <title>JMS Queue</title>
+<!-- InstanceEndEditable -->
+  
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+  
+  <link href="../../../../../docs/css/samples.css" rel="stylesheet" title="Style" type="text/css" />
+  
+  <script language="JavaScript" src="../../../../../docs/core/topicInfo.js" type="text/JavaScript"></script>
+  <script language="JavaScript" src="../../../../../docs/core/CookieClass.js" type="text/JavaScript"></script>
+  <script language="JavaScript" src="../../../../../docs/core/displayContent.js" type="text/JavaScript"></script>
+  
+  <!-- InstanceBeginEditable name="head" -->  <!-- InstanceEndEditable -->
+	
+  <a href="../../../../../docs/core/index.html"></a>
+
+</head>
+
+<body>
+
+	<script language="JavaScript" type="text/JavaScript">
+		try {
+			displayInFrames();
+		}
+		catch (e) {
+		document.write("<table width='100%'><tr><td bgcolor='#19355E' align='left' height='42'; valign='top'><p style='color:white;font-size:130%;font-weight:bold;margin-top:4px;margin-bottom:0;'>WebLogic Server<sup>&reg;</sup> 10.0</p><p style='color:white;font-size:110%;margin-top:2px;margin-bottom:4px;'>Code Examples</p></td></tr></table>");
+			}
+	</script>
+
+  <h1> <script language="JavaScript" type="text/JavaScript">document.write(document.title);</script></h1>
+  <p> 
+  	<a class="navbutton" href="#files">&nbsp;Files&nbsp;</a> 
+	<a class="navbutton" href="#prepare">&nbsp;Prepare&nbsp;</a> 
+	<a class="navbutton" href="#run">&nbsp;Run&nbsp;</a> 
+	<a class="navbutton" href="#troubleshooting" >&nbsp;Troubleshooting&nbsp;</a>	
+	<a class="navbutton" href="#related_topics">&nbsp;Related Topics&nbsp;</a> 
+  </p> 
+
+<h2>About the Example </h2>
+<!-- InstanceBeginEditable name="about" -->
+<p>This example demonstrates how to establish a connection to a JMS queue and then send, browse and receive messages from that queue. The classes in this package operate on the same JMS queue. Run the classes together to observe messages being sent and received and to browse the queue for messages. </p>
+<!-- InstanceEndEditable -->
+<hr />
+<a name="files" id="files"></a>
+<h2>Files Used in the Example</h2>
+<p class="smaller" >Directory Location:</p>
+<p class="smaller" style="font-family:'Courier New',monospace;" >/home/czira/Oracle/Middleware/Oracle_Home/user_projects/applications/wl_server/examples/<!-- InstanceBeginEditable name="PATHTOEXAMPLE" -->src/examples/jms/queue/
+<!-- InstanceEndEditable --></p>
+
+
+<!-- InstanceBeginEditable name="files" -->
+<table border="1" cellpadding="3" cellspacing="0" >
+  <tr>
+    <th><p>File</p>
+        <p style="font-size:75%;font-weight:normal;margin-top:0em">Click source files to view code.</p></th>
+    <th><p>Description</p></th>
+  </tr>
+  <tr>
+    <td><a href="build.xml" target="_blank">build.xml</a></td>
+    <td>Ant build file that contains targets for building and running the example.</td>
+  </tr>
+  <tr>
+    <td><a href="QueueBrowse.html" target="_blank">QueueBrowse.java</a></td>
+    <td>Client that demonstrates how  to connect and  browse (but not dequeue) messages in a JMS queue.</td>
+  </tr>
+  <tr>
+    <td><a href="QueueReceive.html" target="_blank">QueueReceive.java</a></td>
+    <td>Client that demonstrates  how to connect and receive messages from a JMS queue. </td>
+  </tr>
+  <tr>
+    <td><a href="QueueReceiveInTx.html" target="_blank">QueueReceiveInTx.java</a></td>
+    <td>Client that demonstrates how to connect and receive messages from a JMS queue in a client-demarcated transaction. </td>
+  </tr>
+  <tr>
+    <td><a href="QueueSend.html" target="_blank">QueueSend.java</a></td>
+    <td>Client that demonstrates  how to connect and send messages to the JMS queue. </td>
+  </tr>
+</table>
+<!-- InstanceEndEditable -->
+<hr />
+
+<a name="prepare" id="prepare"></a>
+<h2>Prepare the Example</h2>
+<!-- InstanceBeginEditable name="build" -->
+
+
+<h3>Prerequisites</h3>
+<p >Before working with this example: </p>
+<ol>
+  <li><a href="http://docs.oracle.com/middleware/1213/wls/../core/WLSIG/index.html" target="_blank">Install
+      Oracle WebLogic Server</a>, including the
+      examples.</li>
+  <li><a href="javascript:reloadTOC('../../examples.html#startServer')">Start
+      the Examples server.</a></li>
+  <li><a href="javascript:reloadTOC('../../examples.html#environment')">Set
+      up your environment</a>.</li>
+</ol>
+<h3>Configure Oracle WebLogic Server</h3>
+<p>No special configuration is required for this example because the <code>weblogic.examples.jms.QueueConnectionFactory</code> is preconfigured. 
+To verify that the connection factory is configured and deployed, follow the steps below:</p>
+<ol>
+  <li>Invoke the <a href="javascript:reloadTOC('../../examples.html#console')">Administration Console</a> in your browser.</li>
+  <li> In the Domain Structure view in the left pane, select <strong>Services > Messaging > JMS Modules</strong>. </li>
+  <li> Select the <code>examples-jms</code> module from the table of JMS Modules.</li>
+  <li> Observe that the <code>weblogic.examples.jms.QueueConnectionFactory</code> is targeted to the <strong>AdminServer</strong> and the Subdeployment is configured 
+  as <strong>Default Targetting</strong> (the recommended
+  setting for connection factories).</li>
+  <li>Click the <code>weblogic.examples.jms.QueueConnectionFactory</code> connection factory instance to view the configuration. </li>
+  <li>Click the <b>Transactions</b> tab to display the transaction options.</li>
+  <li>If you want to use a JTA transacted session, select the <b>XA Connection Factory Enabled</b> check box. You will have to restart the server if you make this change.
+</ol>
+<h3><a name="build" id="build"></a></h3>
+<h3>Build and Deploy the Example</h3>
+<ol>
+ <li>Set up your development shell, as described in <a href="javascript:reloadTOC('../../examples.html#environment')">Setting up your environment</a>.</li>
+<li>Execute the following command from the
+  shell where you <a href="javascript:reloadTOC('../../examples.html#environment')">set
+  your environment</a>:<br />
+    <br />
+    <code>ant build</code><br />
+    <br />
+  This command compiles and stages the example. The Ant command uses the <code>build.xml</code> file, located in the <font face
+="Courier New" size = -1>/home/czira/Oracle/Middleware/Oracle_Home/user_projects/applications/wl_server/examples/src/examples/jms/queue</font>
+directory, to build the example.
+</li>
+</ol>
+
+<h3>&nbsp;</h3>
+<!-- InstanceEndEditable -->
+<hr />
+<a name="run" id="run"></a>
+<h2>Run the Example</h2>
+<!-- InstanceBeginEditable name="run" -->
+<ol>
+ <li> Complete  the steps in the &quot;<a href="#prepare">Prepare
+  the Example</a>&quot; section.</li>
+ <li>With the examples Oracle WebLogic Server running, 
+    <a href="javascript:reloadTOC('../../examples.html#environment')">set up a new development shell</a> 
+  and run the 
+  <font face="Courier New" size = -1>QueueSend</font> client with the following command:
+   <pre>  <font face="Courier New"><b> ant run.send</b></font></pre>
+ </li>
+ <li>
+ Using the <font face="Courier New" size = -1>QueueSend</font> client, 
+send messages to the queue.</li>
+ <li>
+To <i>browse</i> messages in the queue, 
+<a href="javascript:reloadTOC('../../examples.html#environment')">set up a new development shell</a> 
+and run the 
+<font face="Courier New" size = -1>QueueBrowse</font> client with the following command:
+ <pre>  <font face="Courier New"><b> ant run.browse</b></font></pre>
+</li><li>
+To <i>receive</i> messages from the queue, 
+<a href="javascript:reloadTOC('../../examples.html#environment')">set up a new development shell</a> 
+and run the <font face="Courier New" size = -1>QueueReceive</font> client 
+with the following command:
+ <pre>  <font face="Courier New"><b> ant run.receive</b></font>
+</pre>
+</li><li>
+To <i>receive</i> messages from the queue in a client-demarcated transaction, 
+<a href="javascript:reloadTOC('../../examples.html#environment')">set up a new development shell</a> 
+and run the <font face="Courier New" size = -1>QueueReceiveInTx</font> 
+client with the following command:
+<pre>  <font face="Courier New"><b> ant run.receivetx</b></font></pre>
+<br />
+The program displays messages as they are received from the queue.
+<p>
+<b>Note:</b> The queue receive transaction will timeout with a rollback exception if the amount of time required to send and receive the 
+messages and quit the session somehow exceeds the default 30-minute timeout period.</p>
+</li><li>
+To end the program, send a <tt>quit</tt> message from the shell running
+the <font face="Courier New"><font size=-1>QueueSend</font></font> client.</li>
+</ol>
+
+<!-- InstanceEndEditable -->
+<hr />
+<h2>Troubleshooting</h2>
+<a name="troubleshooting" id="troubleshooting"></a>
+<!-- InstanceBeginEditable name="troubleshooting" --> 
+<ul>
+  <li><a href="javascript:reloadTOC('../../examples.html#troubleshooting')">General Troubleshooting Tips for Examples</a></li>
+</ul>
+<!-- InstanceEndEditable -->
+<hr />
+<h2>Related Topics</h2>
+<p class="smaller">(Internet connection required.)</p>
+<a name="related_topics" id="related_topics"></a> 
+<!-- InstanceBeginEditable name="related_topics" -->
+<ul>
+  <li><a href="http://docs.oracle.com/middleware/1213/wls/JMSPG/index.html" target="_blank">Developing JMS Applications for Oracle WebLogic Server</a>. </li>
+<li><a href="http://docs.oracle.com/middleware/1213/wls/WLPRG/index.html" target="_blank">Developing Applications for Oracle WebLogic Server</a></li>
+</ul>
+<!-- InstanceEndEditable -->
+
+<hr />	
+<p><a href="../../copyright.html">Copyright</a> © 1996, 2014, Oracle and/or its affiliates. All rights reserved. </p>
+
+</body>
+<!-- InstanceEnd --></html>
